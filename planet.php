@@ -1,7 +1,9 @@
 <?
+
 namespace Planet;
 
-class Planet {
+class Planet
+{
     private int $current_day;
 
     // Month starts from 1
@@ -9,34 +11,41 @@ class Planet {
     // Year starts from 1
     public int $year_length;
 
-    function __construct(int $month_length, int $year_length, int $initial_day = 0) {
+    function __construct(int $month_length, int $year_length, int $initial_day = 0)
+    {
         $this->month_length = $month_length;
         $this->year_length = $year_length;
 
         $this->current_day = $initial_day;
     }
 
-    function getPlanetDay() {
+    function getPlanetDay()
+    {
         return $this->current_day;
     }
 
-    static function formatDate(int $year, int $month, int $date) {
-        return ($year + 1).'-'.($month + 1).'-'.($date + 1); 
+    static function formatDate(int $year, int $month, int $date)
+    {
+        return ($year + 1) . '-' . ($month + 1) . '-' . ($date + 1);
     }
 
-    function addDays($days) {
+    function addDays($days)
+    {
         $this->current_day += $days;
     }
-    
-    function addMonths($months) {
+
+    function addMonths($months)
+    {
         $this->addDays($months * $this->month_length);
     }
-    
-    function addYears($years) {
+
+    function addYears($years)
+    {
         $this->addMonths($years * $this->year_length);
     }
 
-    function addDate($date) {
+    function addDate($date)
+    {
         // Let's trust that date is in format y-m-d
         [$years, $months, $days] = explode('-', $date);
 
@@ -45,7 +54,8 @@ class Planet {
         $this->addDays($days);
     }
 
-    static function convertDate(int $day, int $month_length, int $year_length) {
+    static function convertDate(int $day, int $month_length, int $year_length)
+    {
         $full_year = intdiv($day, ($year_length * $month_length));
         $rest_without_years = $day - $full_year * $year_length * $month_length;
         $full_month = intdiv($rest_without_years, $month_length);
@@ -54,19 +64,23 @@ class Planet {
         return self::formatDate($full_year, $full_month, $date);
     }
 
-    function getUTCDate() {
+    function getUTCDate()
+    {
         return self::convertDate($this->current_day, 31, 12);
     }
 
-    function getDate() {
+    function getDate()
+    {
         return self::convertDate($this->current_day, $this->month_length, $this->year_length);
     }
 
-    function convertUsToThem(Planet $p) {
+    function convertUsToThem(Planet $p)
+    {
         return self::convertDate($this->current_day, $p->month_length, $p->year_length);
     }
 
-    function convertThemToUs(Planet $p) {
+    function convertThemToUs(Planet $p)
+    {
         return self::convertDate($p->getPlanetDay(), $this->month_length, $this->year_length);
     }
 }
